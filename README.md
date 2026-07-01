@@ -1,12 +1,14 @@
 # Claude Coach
 
-**A personal endurance coach built entirely from files and Claude Code.**
+**A personal training coach built entirely from files and Claude Code.**
 
-Plans, activity reviews, readiness reads, race strategies — all live as plain markdown in one project folder. Claude reads them, writes them, and coaches from them. An optional Next.js dashboard renders it all.
+Works for any endurance or fitness pursuit — running, cycling, swimming, triathlon, strength, hybrid. Plans, activity reviews, readiness reads, race strategies — all live as plain markdown in one project folder. Claude reads them, writes them, and coaches from them. An optional Next.js dashboard renders it all.
 
 > Built by [dwedigital](https://github.com/dwedigital) · Uses [Claude Code](https://claude.com/claude-code) · MIT licensed
 
 ![Coach Dashboard](docs/dashboard.png)
+
+*Screenshot: one athlete's setup mid-triathlon build. Your dashboard shape depends on what disciplines your profile declares — running, cycling, or a hybrid gives you a different card mix.*
 
 ---
 
@@ -15,10 +17,11 @@ Plans, activity reviews, readiness reads, race strategies — all live as plain 
 ```
 claude-coach/
 ├── coach/            # The coach mechanic — markdown files + scripts
-│   ├── CLAUDE.md     # System prompt (the coach's brain)
-│   ├── athlete/      # Your profile (zones, FTP, constraints)
-│   ├── plans/        # Training plans
-│   ├── goals/        # Race targets
+│   ├── CLAUDE.md     # System prompt (discipline-agnostic core)
+│   ├── athlete/      # Your profile — modular, keep only the disciplines you train
+│   ├── plans/        # Training plans (examples: marathon, cycling fondo, triathlon)
+│   ├── goals/        # Event targets
+│   ├── playbooks/    # Sport-specific playbooks (running, cycling, triathlon…)
 │   ├── log/          # Reviews, readiness reads, source data
 │   └── scripts/      # Data pullers (Garmin, Renpho, etc)
 │
@@ -76,11 +79,18 @@ Wire in whichever you have. All are optional.
 
 ## What makes it different
 
+- **Sport-agnostic core** — the coaching methodology (periodisation, 80/20, RPE, load management) applies to any endurance/fitness pursuit. Discipline-specific playbooks (running, cycling, triathlon…) extend it.
 - **Terminal-first coach** — you talk to Claude, it reads/writes markdown, no chat UI. Full audit trail.
 - **Files-as-memory** — everything is greppable, git-versionable, portable. No lock-in.
 - **Coach voice is customisable** — edit `coach/CLAUDE.md` to change the personality, workflows, rules.
 - **Dashboard is optional** — the coach works standalone in a terminal; the dashboard is just a viewer.
 - **Extensible** — plug in whatever data source you want by writing a small adapter.
+
+## Example plans included
+
+- **[6-week Super Sprint Triathlon](coach/plans/examples/6-week-super-sprint-triathlon.md)** — multi-sport build off a prior race
+- **[12-week Marathon](coach/plans/examples/12-week-marathon.md)** — running periodisation from base to race
+- **[8-week Cycling Fondo](coach/plans/examples/8-week-cycling-fondo.md)** — FTP-anchored cycling build
 
 ---
 
@@ -114,4 +124,4 @@ MIT — do whatever you want. Attribution appreciated but not required.
 
 ## Credits
 
-Built by Dave Edwards ([dwedigital](https://github.com/dwedigital)) as a personal triathlon coach, then extracted into this template for anyone else who wants to try the pattern. Inspired by the "software that keeps working forever" idea — no cloud, no accounts, no lock-in, just files and a good LLM.
+Built by Dave Edwards ([dwedigital](https://github.com/dwedigital)) as a personal triathlon coach, then generalised into a sport-agnostic template for anyone who wants to try the pattern. Inspired by the "software that keeps working forever" idea — no cloud, no accounts, no lock-in, just files and a good LLM.

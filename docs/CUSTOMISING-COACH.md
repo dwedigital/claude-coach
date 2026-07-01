@@ -1,6 +1,21 @@
 # Customising the Coach
 
-The coach is not a program you configure — it's a Claude instance shaped by a system prompt (`coach/CLAUDE.md`). To change the coach's voice, workflows, or rules, you edit that file.
+The coach is not a program you configure — it's a Claude instance shaped by a system prompt (`coach/CLAUDE.md`) plus sport-specific playbooks (`coach/playbooks/`). To change the coach's voice, workflows, or rules, you edit those files.
+
+## The sport-agnostic core vs. playbooks
+
+The template splits knowledge across two levels:
+
+- **`coach/CLAUDE.md`** — the discipline-agnostic core: methodology, workflows, rules that apply to any endurance/fitness pursuit
+- **`coach/playbooks/*.md`** — sport-specific extensions (triathlon, running, cycling, and any you add)
+
+**When to edit which:**
+
+- Change how the coach *talks* → CLAUDE.md
+- Change coaching methodology (periodisation, load model, intensity distribution) → CLAUDE.md
+- Add a session type unique to one sport → that sport's playbook
+- Add race-day protocols for one sport → that sport's playbook
+- Add a whole new sport (strength, rowing, climbing) → new file in `playbooks/`
 
 ## The three levers
 
@@ -11,10 +26,10 @@ Top of `coach/CLAUDE.md` — the first paragraph tells Claude who to be.
 The template ships with:
 
 ```markdown
-You are **Coach**, [athlete-name]'s personal triathlon and endurance training coach. You are direct, knowledgeable, and supportive — but not soft. Think experienced club coach who knows [athlete-name] personally. Use their first name. Call out missed sessions and half-hearted efforts honestly. No corporate language, no cheerleading.
+You are **Coach Claude**, a personal training coach. You are direct, knowledgeable, and supportive — but not soft. Think experienced club coach who knows the athlete personally. Use their first name. Call out missed sessions and half-hearted efforts honestly. No corporate language, no cheerleading.
 ```
 
-Change it to whatever fits — a running coach, a strength coach, a cyclist. Change the tone (chattier, sterner, more scientific). The rest of the file inherits from it.
+Change it to whatever fits — chattier, sterner, more scientific, more zen. The rest of the file inherits from it.
 
 ### 2. The hard rules (things Claude must always/never do)
 
@@ -48,14 +63,31 @@ You can add:
 
 ## The philosophy section
 
-Everything under **"Coaching Philosophy"** is Claude's mental model. Change it to match your training methodology:
+Everything under **"Coaching Philosophy (discipline-agnostic core)"** in CLAUDE.md is Claude's mental model. Change it to match your training methodology:
 
 - **80/20 polarised** (default) or **sweet-spot** or **pyramidal**
 - **Periodisation model** (linear / block / undulating)
-- **Discipline-specific priorities** (swim technique vs volume, bike power vs endurance)
 - **Recovery model** (how you view sleep, HRV, load)
+- **Intensity anchoring** (RPE-first vs HR-first vs power-first)
 
-If you're a runner, delete the triathlon-specific sections and add running-specific ones (marathon periodisation, LT2 workouts, cadence, etc.).
+**Sport-specific priorities** (swim technique vs volume, bike power vs endurance, run cadence vs stride) live in `playbooks/*.md`, not here.
+
+## Adding a new sport
+
+If you want the coach to handle a discipline the template doesn't ship with (rowing, climbing, powerlifting, hybrid athletics), copy an existing playbook as a starting point:
+
+```bash
+cp coach/playbooks/running.md coach/playbooks/rowing.md
+```
+
+Edit `rowing.md` to cover:
+- **Session types** (steady state, race pieces, technical work)
+- **Zone anchoring** (2k pace, HR, stroke rate)
+- **Discipline-specific priorities**
+- **Progression rules and injury prevention**
+- **Race-week protocol** for your target event
+
+Then update `athlete/profile.md` to declare `[x] Rowing` under disciplines trained. Coach reads the new playbook automatically.
 
 ## The athlete profile — what Claude "knows" about you
 

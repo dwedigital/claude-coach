@@ -25,24 +25,40 @@ The coach's world starts with knowing *you*.
 cp coach/athlete/profile.example.md coach/athlete/profile.md
 ```
 
-Now edit `coach/athlete/profile.md`. Fill in:
+Now edit `coach/athlete/profile.md`. The template is **modular** — keep only the sections for disciplines you actually train:
 
+- **Personal + zones** — always keep
+- **RUN section** — keep if you run
+- **BIKE section** — keep if you cycle
+- **SWIM section** — keep if you swim
+- **STRENGTH section** — keep if you lift
+
+Delete the rest. The coach reads what's there and adapts.
+
+Fill in:
 - Weight, height, age
 - Heart-rate zones (Z1-Z5) — from a lab test if you have one, else estimate from max HR
-- Discipline benchmarks (running pace, cycling FTP, swim CSS)
+- Discipline benchmarks for each sport you kept (running pace, cycling FTP, swim CSS, lifting numbers)
 - Any injuries, constraints, preferences
 
 Your profile is **gitignored** — it stays on your machine.
 
 ## 3. Write your first plan
 
-Copy an example plan or start blank:
+Copy an example plan matching your sport:
 
 ```bash
-cp coach/plans/examples/6-week-super-sprint.md coach/plans/current-plan.md
+# Triathlon
+cp coach/plans/examples/6-week-super-sprint-triathlon.md coach/plans/current-plan.md
+
+# Marathon / running
+cp coach/plans/examples/12-week-marathon.md coach/plans/current-plan.md
+
+# Cycling fondo
+cp coach/plans/examples/8-week-cycling-fondo.md coach/plans/current-plan.md
 ```
 
-Or ask Claude to build one for you — see `docs/CUSTOMISING-COACH.md`.
+Or ask Claude to build one for your event — see `docs/CUSTOMISING-COACH.md`.
 
 ## 4. Connect data sources (optional)
 
