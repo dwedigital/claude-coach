@@ -6,6 +6,8 @@ Plans, activity reviews, readiness reads, race strategies — all live as plain 
 
 > Built by [dwedigital](https://github.com/dwedigital) · Uses [Claude Code](https://claude.com/claude-code) · MIT licensed
 
+![Coach Dashboard](docs/dashboard.png)
+
 ---
 
 ## What's in the box
