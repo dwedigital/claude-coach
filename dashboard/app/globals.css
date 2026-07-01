@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Default: Rosé Pine Dawn (light) */
+  :root,
+  [data-theme="light"] {
+    --bg: #faf4ed;
+    --surface: #fffaf3;
+    --surface-elev: #f2e9e1;
+    --surface-strong: #e8dccc;
+    --border: #e8dccc;
+    --border-strong: #cecacd;
+    --text: #575279;
+    --text-muted: #797593;
+    --text-subtle: #9893a5;
+    --text-faint: #c4becc;
+    --accent: #b4637a;
+    --accent-strong: #b4637a;
+    --accent-soft: rgba(180, 99, 122, 0.12);
+    --warm: #ea9d34;
+    --pine: #286983;
+    color-scheme: light;
+  }
+
+  [data-theme="dark"] {
+    --bg: #0a0a0a;
+    --surface: #16161a;
+    --surface-elev: rgba(255, 255, 255, 0.05);
+    --surface-strong: rgba(255, 255, 255, 0.08);
+    --border: rgba(255, 255, 255, 0.05);
+    --border-strong: rgba(255, 255, 255, 0.1);
+    --text: #ffffff;
+    --text-muted: #a1a1aa;
+    --text-subtle: #71717a;
+    --text-faint: #52525b;
+    --accent: #ff6b47;
+    --accent-strong: #ff6b47;
+    --accent-soft: rgba(255, 107, 71, 0.1);
+    --warm: #ffb07a;
+    --pine: #56949f;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer components {
+  .card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    @apply rounded-3xl p-6;
+  }
+  .pill {
+    background: var(--surface-elev);
+    border: 0.5px solid var(--border-strong);
+    color: var(--text-muted);
+    @apply rounded-full px-3 py-1.5 text-xs;
+  }
+  .accent-pill {
+    background: var(--accent);
+    color: var(--bg);
+    @apply rounded-full px-5 py-2 text-sm font-medium;
+  }
+  .surface-2 {
+    background: var(--surface-elev);
+  }
+}
+
+.prose-review {
+  color: var(--text-muted);
+  @apply text-sm leading-relaxed;
+}
+.prose-review h1 {
+  color: var(--text);
+  @apply mt-6 mb-3 text-lg font-medium;
+}
+.prose-review h2 {
+  color: var(--text);
+  @apply mt-5 mb-2 text-base font-medium;
+}
+.prose-review h3 {
+  color: var(--text);
+  @apply mt-4 mb-2 text-sm font-medium;
+}
+.prose-review p {
+  @apply my-2;
+}
+.prose-review strong {
+  color: var(--text);
+  @apply font-medium;
+}
+.prose-review em {
+  color: var(--text-subtle);
+}
+.prose-review ul,
+.prose-review ol {
+  @apply my-2 ml-5 space-y-1;
+}
+.prose-review ul {
+  @apply list-disc;
+}
+.prose-review ol {
+  @apply list-decimal;
+}
+.prose-review li {
+  @apply pl-1;
+}
+.prose-review code {
+  background: var(--surface-elev);
+  color: var(--accent);
+  @apply rounded px-1.5 py-0.5 text-[12px];
+}
+.prose-review pre {
+  background: var(--surface-elev);
+  @apply my-3 overflow-x-auto rounded-xl p-3 text-[12px];
+}
+.prose-review blockquote {
+  border-left: 2px solid var(--accent);
+  color: var(--text-subtle);
+  @apply my-3 pl-3;
+}
+.prose-review hr {
+  border-color: var(--border);
+  @apply my-5;
+}
+.prose-review a {
+  color: var(--accent);
+  @apply underline underline-offset-2;
+}
+.prose-review table {
+  @apply my-3 w-full text-xs;
+}
+.prose-review th {
+  border-bottom: 1px solid var(--border-strong);
+  color: var(--text-muted);
+  @apply px-2 py-1.5 text-left font-medium;
+}
+.prose-review td {
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  @apply px-2 py-1.5 align-top;
+}

@@ -1,0 +1,42 @@
+# --- Personal training data — NEVER commit ---
+# Coach mechanic personal data
+coach/athlete/profile.md
+coach/plans/current-plan.md
+coach/plans/archive/
+coach/goals/*.md
+!coach/goals/examples/
+!coach/goals/README.md
+coach/log/
+
+# Dashboard data caches
+dashboard/data/
+
+# --- Credentials & auth — NEVER commit ---
+.env
+.env.local
+.env.*.local
+**/tokens.json
+**/session.json
+**/*credentials*
+**/.env
+
+# --- Standard ignores ---
+node_modules/
+.next/
+out/
+dist/
+build/
+.DS_Store
+*.log
+.vscode/
+.idea/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.uv-cache/
+tsconfig.tsbuildinfo
+next-env.d.ts
+
+# --- Local Claude / MCP state ---
+.claude/
