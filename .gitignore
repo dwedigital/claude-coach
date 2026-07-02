@@ -38,8 +38,9 @@ venv/
 tsconfig.tsbuildinfo
 next-env.d.ts
 
-# --- Local Claude / MCP state ---
-.claude/
+# --- Local Claude / MCP state (but ship the bundled skills) ---
+.claude/*
+!.claude/skills/
 
 # Sanitisation staging files (created by sync-from-private.sh, never committed)
 *.PRIVATE

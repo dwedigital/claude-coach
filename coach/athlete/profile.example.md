@@ -1,10 +1,12 @@
 # Athlete Profile: [Your Name]
 
-> **Template.** Copy this file to `athlete/profile.md` and fill in your details.
+> **Template.** Copy this file to `athlete/profile.md` and fill in your details — or better, run the `/onboard` skill and let the coach interview you and fill it in.
 >
 > **Modular by design.** Delete the discipline sections you don't train — the coach reads what's here and adapts. If you're a marathoner, keep "Run", delete "Bike"/"Swim". If you're a triathlete, keep all three. Same for cycling, swimming, gym-only.
 >
 > Your actual `profile.md` is `.gitignored` — it stays local.
+>
+> The evidence base behind how the coach uses these numbers lives in `../coaching/` (signal hierarchy, readiness rules, methodology, protocols).
 
 ## Personal
 - **Name:** [First Last]
@@ -47,6 +49,20 @@ If you have a lab test, use those anchor points. Otherwise, % of max HR is a rea
 | Z3 | Tempo | [146-154] | 5-6 |
 | Z4 | Threshold | [154-170] | 7-8 |
 | Z5 | VO2max+ | [170+] | 9-10 |
+
+## Recovery & Readiness Baselines
+
+> The coach uses these for daily proceed/modify/rest calls — see `../coaching/readiness-rules.md` for how. **Leave blank at first**: baselines need ~4 weeks of your own data (a wearable, sleep sensor, or morning HRV app). Ask the coach to derive them once you have the history, and to recalibrate every ~4 weeks.
+>
+> **One row per device/stream — never compare numbers across devices.** A watch's HRV and a bed sensor's HRV are different scales.
+
+| Stream | Device | Baseline | Normal range | Last calibrated |
+|---|---|---|---|---|
+| Nocturnal HRV (rMSSD) | [device] | [—] | [—] | YYYY-MM-DD |
+| Morning / watch HRV | [device] | [—] | [—] | YYYY-MM-DD |
+| Resting HR | [device] | [—] | [—] | YYYY-MM-DD |
+| Sleep duration | [device] | [typical hrs] | [range] | YYYY-MM-DD |
+| Sleep composition | [device] | [deep %, REM %] | — | YYYY-MM-DD |
 
 ## Training History
 - **Years training:** [X]

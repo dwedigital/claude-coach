@@ -45,19 +45,17 @@ TL;DR:
 gh repo clone dwedigital/claude-coach
 cd claude-coach
 
-# 2. Configure the coach
-cp coach/athlete/profile.example.md coach/athlete/profile.md
-# ...edit with your zones, FTP, weight, targets
+# 2. Bootstrap (copies templates, checks prerequisites — idempotent)
+./scripts/setup.sh
 
-# 3. (Optional) Configure data sources
-cp coach/.env.example coach/.env
-# ...fill in the credentials for whichever sources you use
+# 3. Let the coach set you up
+claude
+# then type: /onboard — the coach interviews you and writes your
+# profile, derives your zones, and builds your first plan
 
 # 4. (Optional) Run the dashboard
-cd dashboard
-cp .env.example .env.local
-npm install
-npm run dev
+./scripts/setup.sh --with-dashboard
+cd dashboard && npm run dev
 # → http://localhost:3000
 ```
 

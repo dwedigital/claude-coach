@@ -1,6 +1,6 @@
 # Quickstart
 
-Get your own Claude Coach running in about 20 minutes.
+Get your own Claude Coach running in about 20 minutes — or 2 minutes with the fast path.
 
 ## Prerequisites
 
@@ -8,6 +8,21 @@ Get your own Claude Coach running in about 20 minutes.
 - **Node.js 18+** (for the dashboard, optional)
 - **[uv](https://docs.astral.sh/uv/)** (for Python data-source scripts, optional)
 - A GitHub account (to fork this repo)
+
+## The fast path (recommended)
+
+```bash
+# Fork on GitHub, then:
+gh repo clone <your-username>/claude-coach
+cd claude-coach
+
+./scripts/setup.sh     # bootstraps templates, checks prerequisites (idempotent)
+claude                 # start Claude Code in the repo
+```
+
+Then type **`/onboard`**. The coach interviews you — disciplines, benchmarks, schedule, goals — and writes your profile, derives your zones, and builds (or copies) your first plan. Anything you don't know yet (FTP, CSS) gets a test scheduled instead of a made-up number.
+
+Everything below is the manual version of what `/onboard` does — useful as a reference, or if you prefer editing files yourself.
 
 ## 1. Fork and clone
 
