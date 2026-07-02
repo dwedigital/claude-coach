@@ -1,4 +1,4 @@
-It is $TODAY (ISO week $ISO_WEEK). Do Dave's weekly training review per the "Weekly review" workflow in CLAUDE.md:
+It is $TODAY (ISO week $ISO_WEEK). Do the athlete's weekly training review per the "Weekly review" workflow in CLAUDE.md:
 
 1. Fetch all Strava activities from the past 7 days via the Strava MCP.
 2. Read plans/current-plan.md and athlete/profile.md for context.

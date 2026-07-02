@@ -40,3 +40,6 @@ next-env.d.ts
 
 # --- Local Claude / MCP state ---
 .claude/
+
+# Sanitisation staging files (created by sync-from-private.sh, never committed)
+*.PRIVATE

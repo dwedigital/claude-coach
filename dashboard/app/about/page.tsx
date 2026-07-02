@@ -132,7 +132,7 @@ export default function AboutPage() {
           <TimelineStep
             step="post"
             title="Review my activity"
-            body="Coach fetches the activity from Strava MCP, pulls HR streams + laps, compares to plan, writes a markdown review to log/reviews/, updates the Strava activity title + description with a coach-voice summary and #Coach_dAIve tag."
+            body="Coach fetches the activity from Strava MCP, pulls HR streams + laps, compares to plan, writes a markdown review to log/reviews/, updates the Strava activity title + description with a coach-voice summary and a coach hashtag."
           />
           <TimelineStep
             step="anytime"

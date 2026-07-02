@@ -64,6 +64,18 @@ fi
 echo "▶ Coach — shareable reference (swim resources)"
 copy "$COACH_PRIVATE/athlete/swim-resources.md" "$REPO_ROOT/coach/athlete/swim-resources.md"
 
+echo "▶ Coach — coaching/ knowledge base (SANITISATION REQUIRED — will diff-alert)"
+if [[ -d "$COACH_PRIVATE/coaching" ]]; then
+  for f in "$COACH_PRIVATE/coaching"/*.md; do
+    [[ -e "$f" ]] || continue
+    base="$(basename "$f")"
+    copy "$f" "$REPO_ROOT/coach/coaching/${base}.PRIVATE"
+  done
+  if [[ $DRY_RUN -eq 0 ]]; then
+    log "wrote coach/coaching/*.md.PRIVATE — sanitise (athlete name, personal HRV/RHR baselines, race/location specifics, private memory refs) then rename each to *.md"
+  fi
+fi
+
 echo "▶ Dashboard — code (app, components, lib, scripts, public, config)"
 copy "$DASHBOARD_PRIVATE/app" "$REPO_ROOT/dashboard/app"
 copy "$DASHBOARD_PRIVATE/components" "$REPO_ROOT/dashboard/components"
@@ -86,9 +98,10 @@ echo "    dashboard/scripts/sync-all.sh    — hardcoded fallback path"
 echo "    dashboard/app/page.tsx           — athlete name → env var (NEXT_PUBLIC_ATHLETE_NAME)"
 echo "    dashboard/app/about/page.tsx     — footer credit line"
 echo "    coach/CLAUDE.md.PRIVATE          — pronoun pass, name refs, race specifics"
+echo "    coach/coaching/*.md.PRIVATE      — name refs, personal HRV/RHR baselines, private memory refs"
 echo ""
 echo "  Then:"
-echo "    1. Rename coach/CLAUDE.md.PRIVATE → coach/CLAUDE.md after sanitising"
+echo "    1. Rename coach/CLAUDE.md.PRIVATE → coach/CLAUDE.md and coach/coaching/*.md.PRIVATE → *.md after sanitising"
 echo "    2. Add your own leak patterns via LEAK_PATTERNS env var"
 echo "    3. git status && git diff — review before commit"
 echo ""
@@ -103,7 +116,7 @@ if [[ $DRY_RUN -eq 0 ]]; then
     "$REPO_ROOT/coach" "$REPO_ROOT/dashboard" \
     --include='*.ts' --include='*.tsx' --include='*.py' --include='*.sh' \
     --include='*.md' --include='*.json' --include='*.mjs' \
-    --exclude='CLAUDE.md.PRIVATE' \
+    --exclude='*.md.PRIVATE' \
     2>/dev/null || true)
   if [[ -n "$hits" ]]; then
     echo ""
@@ -112,7 +125,7 @@ if [[ $DRY_RUN -eq 0 ]]; then
     echo ""
     exit 1
   else
-    echo "  ✓ no personal-data hits in synced code (excluding CLAUDE.md.PRIVATE)"
+    echo "  ✓ no personal-data hits in synced code (excluding *.md.PRIVATE staging files)"
   fi
 fi
 

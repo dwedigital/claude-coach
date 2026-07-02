@@ -50,7 +50,7 @@ export function Header({ athleteName, todayReview }: Props) {
           <div className="text-2xl font-medium text-text">
             {todayReview
               ? "Coach Claude reviewed today's session ✓"
-              : "Hey, Dave 👋"}
+              : `Hey, ${athleteName} 👋`}
           </div>
           <div className="text-base text-text-subtle">
             {todayReview

@@ -24,7 +24,7 @@ export function parsePlan(): PlanDoc {
   const eventMatch = raw.match(RACE_RE);
   const eventStr = (eventMatch?.[1] ?? planTitle).replace(/\*\*/g, "").trim();
 
-  // Parse race date from event string e.g. "Jersey Super Sprint Triathlon (...) ... 9 August 2026"
+  // Parse race date from event string e.g. "City 10K Run (...) ... 12 October 2025"
   let raceDate = "";
   const dateMatch = raw.match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/);
   if (dateMatch) {

@@ -1,6 +1,6 @@
 # Swim Resources
 
-A curated set of resources, drills, and videos for improving swim technique — specifically tailored to the issues flagged in Dave's January 2026 coaching session.
+A curated set of resources, drills, and videos for improving swim technique — specifically tailored to the issues flagged in a January 2026 swim coaching session.
 
 ---
 
