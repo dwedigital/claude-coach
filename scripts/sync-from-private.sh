@@ -61,8 +61,8 @@ if [[ $DRY_RUN -eq 0 ]]; then
   log "wrote coach/CLAUDE.md.PRIVATE — manually sanitise then rename to CLAUDE.md"
 fi
 
-echo "▶ Coach — shareable reference (swim resources)"
-copy "$COACH_PRIVATE/athlete/swim-resources.md" "$REPO_ROOT/coach/athlete/swim-resources.md"
+echo "▶ Coach — shareable reference (swim resources → playbooks)"
+copy "$COACH_PRIVATE/athlete/swim-resources.md" "$REPO_ROOT/coach/playbooks/swim-technique-resources.md"
 
 echo "▶ Coach — coaching/ knowledge base (SANITISATION REQUIRED — will diff-alert)"
 if [[ -d "$COACH_PRIVATE/coaching" ]]; then
@@ -97,6 +97,7 @@ echo "    dashboard/lib/paths.ts           — hardcoded absolute path fallbacks
 echo "    dashboard/scripts/sync-all.sh    — hardcoded fallback path"
 echo "    dashboard/app/page.tsx           — athlete name → env var (NEXT_PUBLIC_ATHLETE_NAME)"
 echo "    dashboard/app/about/page.tsx     — footer credit line"
+echo "    dashboard/package.json           — keep public name/description/license (git checkout if clobbered)"
 echo "    coach/CLAUDE.md.PRIVATE          — pronoun pass, name refs, race specifics"
 echo "    coach/coaching/*.md.PRIVATE      — name refs, personal HRV/RHR baselines, private memory refs"
 echo ""

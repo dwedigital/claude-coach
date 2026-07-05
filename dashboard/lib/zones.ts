@@ -33,9 +33,9 @@ export interface WeekZoneDistribution {
   hardPct: number;
 }
 
-export function thisWeekZoneDistribution(): WeekZoneDistribution {
+export function thisWeekZoneDistribution(offsetWeeks = 0): WeekZoneDistribution {
   const acts = loadActivities();
-  const { start, end } = getWeekRange();
+  const { start, end } = getWeekRange(offsetWeeks);
   const byZone: Record<string, number> = {
     Z1: 0,
     Z2: 0,

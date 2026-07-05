@@ -106,9 +106,8 @@ export function parsePlan(): PlanDoc {
   return { raceName: eventStr, raceDate, weeks };
 }
 
-export function currentWeek(plan: PlanDoc): PlanWeek | undefined {
-  // Parse the date range from each week title and pick the one containing today
-  const today = new Date();
+// Parse the date range from each week title and pick the one containing `date`.
+export function weekForDate(plan: PlanDoc, date: Date): PlanWeek | undefined {
   for (const w of plan.weeks) {
     const range = w.title.match(/(\w+)\s+(\d+)\s*-\s*(?:(\w+)\s+)?(\d+)/);
     if (!range) continue;
@@ -117,10 +116,14 @@ export function currentWeek(plan: PlanDoc): PlanWeek | undefined {
     const m2 = range[3] ? monthIndex(range[3]) : m1;
     const d2 = parseInt(range[4]);
     if (Number.isNaN(m1) || Number.isNaN(m2)) continue;
-    const year = today.getUTCFullYear();
+    const year = date.getUTCFullYear();
     const start = new Date(Date.UTC(year, m1, d1));
     const end = new Date(Date.UTC(year, m2, d2, 23, 59, 59));
-    if (today >= start && today <= end) return w;
+    if (date >= start && date <= end) return w;
   }
   return undefined;
+}
+
+export function currentWeek(plan: PlanDoc): PlanWeek | undefined {
+  return weekForDate(plan, new Date());
 }

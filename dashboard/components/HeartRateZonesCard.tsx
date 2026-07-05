@@ -2,21 +2,25 @@ import { ZONES, WeekZoneDistribution } from "@/lib/zones";
 
 interface Props {
   distribution: WeekZoneDistribution;
+  weekLabel?: string;
 }
 
-export function HeartRateZonesCard({ distribution }: Props) {
+export function HeartRateZonesCard({
+  distribution,
+  weekLabel = "this week",
+}: Props) {
   const totalMin = distribution.totalMin;
   return (
     <div className="card">
-      <div className="mb-4 flex items-start justify-between">
-        <div>
+      <div className="mb-4 flex items-start justify-between gap-2">
+        <div className="min-w-0">
           <div className="text-xs text-text-subtle">Heart rate zones</div>
-          <div className="text-[10px] text-text-faint">
+          <div className="truncate text-[10px] text-text-faint">
             Lab VO2 test · road pace · 80/20 polarised target
           </div>
         </div>
-        <div className="text-right text-[10px] text-text-subtle">
-          {Math.round(totalMin)} min this week
+        <div className="shrink-0 text-right text-[10px] text-text-subtle">
+          {Math.round(totalMin)} min {weekLabel}
         </div>
       </div>
 
@@ -37,7 +41,7 @@ export function HeartRateZonesCard({ distribution }: Props) {
               );
             })}
           </div>
-          <div className="mt-2 flex justify-between text-[10px]">
+          <div className="mt-2 flex flex-wrap justify-between gap-x-3 gap-y-1 text-[10px]">
             <span className="text-text-subtle">
               Easy (Z1-Z2):{" "}
               <span className="font-medium text-text">
@@ -56,7 +60,7 @@ export function HeartRateZonesCard({ distribution }: Props) {
         </div>
       ) : (
         <div className="mb-5 rounded-2xl bg-surface-elev px-3 py-2 text-[10px] text-text-subtle">
-          No HR-tracked activities this week yet
+          No HR-tracked activities {weekLabel} yet
         </div>
       )}
 
@@ -77,7 +81,7 @@ export function HeartRateZonesCard({ distribution }: Props) {
               <span className="w-6 shrink-0 font-medium text-text sm:w-7">
                 {z.zone}
               </span>
-              <span className="min-w-0 flex-1 truncate text-text-muted sm:w-20 sm:flex-none">
+              <span className="min-w-0 flex-1 truncate text-text-muted lg:w-20 lg:flex-none">
                 {z.name}
               </span>
               <span className="shrink-0 sm:w-20">
@@ -87,7 +91,7 @@ export function HeartRateZonesCard({ distribution }: Props) {
                   ? `${z.hrMin}+`
                   : `${z.hrMin}-${z.hrMax}`}
               </span>
-              <span className="hidden flex-1 truncate md:inline">
+              <span className="hidden min-w-0 flex-1 truncate lg:block">
                 {z.pace}
               </span>
               <span className="w-10 shrink-0 text-right text-accent">

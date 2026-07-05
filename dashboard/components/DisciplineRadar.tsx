@@ -15,11 +15,14 @@ import { ActualMinutes } from "@/lib/weeklyVolume";
 interface Props {
   planned: DisciplineMinutes;
   actual: ActualMinutes;
+  weekLabel?: string;
 }
 
 const DISCIPLINES: (keyof DisciplineMinutes)[] = ["Swim", "Bike", "Run", "Strength"];
 
-export function DisciplineRadar({ planned, actual }: Props) {
+export function DisciplineRadar({ planned, actual, weekLabel = "this week" }: Props) {
+  const heading =
+    weekLabel.charAt(0).toUpperCase() + weekLabel.slice(1);
   const data = DISCIPLINES.map((d) => ({
     discipline: d,
     planned: planned[d],
@@ -35,7 +38,7 @@ export function DisciplineRadar({ planned, actual }: Props) {
   return (
     <div className="card">
       <div className="mb-1 text-xs text-text-subtle">
-        This week · volume vs plan
+        {heading} · volume vs plan
       </div>
       <div className="mb-3 text-[10px] text-text-faint">
         Planned (outline) · Actual (filled) · minutes
@@ -43,11 +46,12 @@ export function DisciplineRadar({ planned, actual }: Props) {
 
       <div className="h-[260px]">
         <ResponsiveContainer width="100%" height="100%">
-          <RadarChart data={data} outerRadius="80%">
+          <RadarChart data={data} outerRadius="72%">
             <PolarGrid stroke="var(--surface-strong)" />
             <PolarAngleAxis
               dataKey="discipline"
               tick={{ fill: "var(--text-muted)", fontSize: 11 }}
+              tickFormatter={(v: string) => (v === "Strength" ? "S&C" : v)}
             />
             <PolarRadiusAxis
               angle={90}
@@ -98,8 +102,8 @@ export function DisciplineRadar({ planned, actual }: Props) {
               key={d}
               className="flex items-center justify-between rounded-lg bg-surface-elev px-2.5 py-1.5"
             >
-              <span className="text-text-muted">{d}</span>
-              <span className="flex items-baseline gap-1.5">
+              <span className="min-w-0 truncate text-text-muted">{d}</span>
+              <span className="flex shrink-0 items-baseline gap-1.5 whitespace-nowrap">
                 <span className="font-medium text-text">{a}</span>
                 <span className="text-text-faint">/ {p || "—"} min</span>
                 {p > 0 && (

@@ -1,12 +1,17 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { PlanWeek, PlanSession, cleanSessionText } from "@/lib/planTypes";
-import { format, startOfWeek, addDays, isSameDay } from "date-fns";
+import { format, addDays, isSameDay } from "date-fns";
 import { SessionModal } from "./SessionModal";
 
 interface Props {
   week?: PlanWeek;
+  /** ISO string for the Monday of the week being shown. */
+  weekStartISO: string;
+  /** Week offset from the current week: 0 = this week, -1 = last, +1 = next. */
+  offset: number;
 }
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -19,49 +24,84 @@ function sessionsForDay(week: PlanWeek | undefined, dow: string): PlanSession[] 
   });
 }
 
+/** Word-boundary keyword test — "strides" must NOT match "ride". */
+function hasWord(txt: string, ...stems: string[]): boolean {
+  return stems.some((s) => new RegExp(`\\b${s}`).test(txt));
+}
+
 function disciplineIcon(session: PlanSession): string {
   const cleaned = cleanSessionText(session.session).toLowerCase();
   const txt = (cleaned + " " + (session.discipline ?? "")).toLowerCase();
   // Priority order: REST first (handles "X → REST" cases)
-  if (cleaned.includes("rest") && !cleaned.includes("rehearsal")) return "🛏️";
-  if (txt.includes("race")) return "🏁";
-  if (txt.includes("brick")) return "🚴🏃";
-  if (txt.includes("swim")) return "🏊";
-  if (txt.includes("bike") || txt.includes("ride") || txt.includes("cycle"))
-    return "🚴";
-  if (txt.includes("run") || txt.includes("jog")) return "🏃";
-  if (txt.includes("s&c") || txt.includes("strength")) return "💪";
+  if (/\brest\b/.test(cleaned) && !cleaned.includes("rehearsal")) return "🛏️";
+  if (hasWord(txt, "race")) return "🏁";
+  if (hasWord(txt, "brick")) return "🚴🏃";
+  if (hasWord(txt, "swim")) return "🏊";
+  if (hasWord(txt, "bike", "ride", "cycle")) return "🚴";
+  if (hasWord(txt, "run", "jog")) return "🏃";
+  if (txt.includes("s&c") || hasWord(txt, "strength")) return "💪";
   return "•";
 }
 
-export function WeekCalendar({ week }: Props) {
+export function WeekCalendar({ week, weekStartISO, offset }: Props) {
   const [openSession, setOpenSession] = useState<PlanSession | null>(null);
 
-  if (!week) {
-    return (
-      <div className="card">
-        <div className="text-xs text-text-subtle">This week</div>
-        <div className="mt-2 text-sm text-text-muted">No active week</div>
-      </div>
-    );
-  }
   const today = new Date();
-  const monday = startOfWeek(today, { weekStartsOn: 1 });
-  const days = DAYS.map((label, i) => addDays(monday, i));
+  const monday = new Date(weekStartISO);
+  const days = DAYS.map((_, i) => addDays(monday, i));
+  const rangeLabel = `${format(monday, "MMM d")} – ${format(addDays(monday, 6), "MMM d")}`;
+
+  const navBtn =
+    "flex h-6 w-6 items-center justify-center rounded-full bg-surface-elev text-text-muted transition-colors hover:bg-surface-strong hover:text-text";
 
   return (
     <>
       <div className="card">
-        <div className="mb-4 flex items-start justify-between">
-          <div>
-            <div className="text-xs">{week.title}</div>
-            {week.intent && (
+        <div className="mb-4 flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="text-xs">{week ? week.title : rangeLabel}</div>
+            {week?.intent ? (
               <div className="mt-1 line-clamp-1 text-[11px] text-text-faint">
                 {week.intent.replace(/\*\*/g, "")}
               </div>
+            ) : (
+              !week && (
+                <div className="mt-1 text-[11px] text-text-faint">
+                  No plan for this week
+                </div>
+              )
             )}
           </div>
-          <div className="pill">{week.sessions.length} sessions</div>
+          <div className="flex shrink-0 items-center gap-2">
+            {week && <div className="pill">{week.sessions.length} sessions</div>}
+            <div className="flex items-center gap-1">
+              <Link
+                href={`/?w=${offset - 1}`}
+                className={navBtn}
+                aria-label="Previous week"
+                scroll={false}
+              >
+                ‹
+              </Link>
+              {offset !== 0 && (
+                <Link
+                  href="/?w=0"
+                  className="rounded-full bg-surface-elev px-2.5 py-1 text-[10px] text-text-muted transition-colors hover:bg-surface-strong hover:text-text"
+                  scroll={false}
+                >
+                  Today
+                </Link>
+              )}
+              <Link
+                href={`/?w=${offset + 1}`}
+                className={navBtn}
+                aria-label="Next week"
+                scroll={false}
+              >
+                ›
+              </Link>
+            </div>
+          </div>
         </div>
         <div className="grid grid-cols-1 gap-2 lg:grid-cols-7">
           {days.map((d, i) => {

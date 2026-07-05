@@ -15,8 +15,8 @@ import { loadRenphoReadings, buildMetricSeries } from "@/lib/renpho";
 import { loadCurrentGoal } from "@/lib/goals";
 import { buildReadinessSeries, todayReadiness } from "@/lib/readiness";
 import { loadReviews, reviewsForToday } from "@/lib/reviews";
-import { parsePlan, currentWeek } from "@/lib/plan";
-import { actualVolumeForWeek } from "@/lib/weeklyVolume";
+import { parsePlan, weekForDate } from "@/lib/plan";
+import { actualVolumeForWeek, getWeekRange } from "@/lib/weeklyVolume";
 import { plannedVolumeForWeek } from "@/lib/plannedVolume";
 import { loadProfile } from "@/lib/profile";
 import { thisWeekZoneDistribution } from "@/lib/zones";
@@ -26,8 +26,31 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 export const fetchCache = "force-no-store";
 
-export default function HomePage() {
+export default function HomePage({
+  searchParams,
+}: {
+  searchParams?: { w?: string };
+}) {
   noStore();
+  // Selected week offset (0 = this week) from the ?w= URL param, clamped.
+  const rawOffset = parseInt(searchParams?.w ?? "0", 10);
+  const offset = Number.isFinite(rawOffset)
+    ? Math.max(-52, Math.min(52, rawOffset))
+    : 0;
+  const { start: weekStart } = getWeekRange(offset);
+  const weekMid = new Date(weekStart.getTime() + 3 * 86_400_000); // Thursday
+  const weekLabel =
+    offset === 0
+      ? "this week"
+      : offset === -1
+        ? "last week"
+        : offset === 1
+          ? "next week"
+          : `${format(weekStart, "MMM d")} – ${format(
+              new Date(weekStart.getTime() + 6 * 86_400_000),
+              "MMM d",
+            )}`;
+
   const goal = loadCurrentGoal();
   const reviews = loadReviews();
   const todayReviews = reviewsForToday(reviews);
@@ -39,12 +62,14 @@ export default function HomePage() {
   } catch {
     plan = null;
   }
-  const week = plan ? currentWeek(plan) : undefined;
+  // The week being viewed (navigable) vs. today's week (drives the Today card).
+  const week = plan ? weekForDate(plan, weekMid) : undefined;
+  const currentWk = plan ? weekForDate(plan, new Date()) : undefined;
   const todayDow = format(new Date(), "EEE");
   const todayMon = format(new Date(), "MMM");
   const todayNum = format(new Date(), "d");
   const todaySessions =
-    week?.sessions.filter((s) => {
+    currentWk?.sessions.filter((s) => {
       const day = s.day;
       const dayNumRe = new RegExp(`\\b${todayNum}\\b`);
       return (
@@ -54,9 +79,9 @@ export default function HomePage() {
       );
     }) ?? [];
   const plannedVol = plannedVolumeForWeek(week);
-  const actualVol = actualVolumeForWeek();
+  const actualVol = actualVolumeForWeek(offset);
   const profile = loadProfile();
-  const zoneDist = thisWeekZoneDistribution();
+  const zoneDist = thisWeekZoneDistribution(offset);
   const renpho = loadRenphoReadings();
   const bcWeight = buildMetricSeries(renpho, "weight_kg", "kg", 1);
   const bcBodyFat = buildMetricSeries(renpho, "body_fat_pct", "pp", 1);
@@ -131,7 +156,11 @@ export default function HomePage() {
 
         {/* Row 3 — Week calendar (full width, 7 days) */}
         <div className="col-span-12">
-          <WeekCalendar week={week} />
+          <WeekCalendar
+            week={week}
+            weekStartISO={weekStart.toISOString()}
+            offset={offset}
+          />
         </div>
 
         {/* Row 4 — Trends row */}
@@ -247,10 +276,14 @@ export default function HomePage() {
 
         {/* Row 5 — HR Zones · Discipline · Athlete stats */}
         <div className="col-span-12 md:col-span-4 grid h-full">
-          <HeartRateZonesCard distribution={zoneDist} />
+          <HeartRateZonesCard distribution={zoneDist} weekLabel={weekLabel} />
         </div>
         <div className="col-span-12 md:col-span-4 grid h-full">
-          <DisciplineRadar planned={plannedVol} actual={actualVol} />
+          <DisciplineRadar
+            planned={plannedVol}
+            actual={actualVol}
+            weekLabel={weekLabel}
+          />
         </div>
         <div className="col-span-12 md:col-span-4 grid h-full">
           <AthleteStatsCard profile={profile} />

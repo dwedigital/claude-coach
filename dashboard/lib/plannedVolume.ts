@@ -46,22 +46,26 @@ export function parseDuration(d?: string): number {
   return 0;
 }
 
+/** Word-boundary keyword test — "strides" must NOT match "ride". */
+function hasWord(txt: string, ...stems: string[]): boolean {
+  return stems.some((s) => new RegExp(`\\b${s}`).test(txt));
+}
+
 function classify(session: PlanSession): keyof DisciplineMinutes | null {
   const txt = (
     session.session +
     " " +
     (session.discipline ?? "")
   ).toLowerCase();
-  if (txt.includes("rest")) return null;
-  if (txt.includes("brick")) {
+  if (/\brest\b/.test(txt)) return null;
+  if (hasWord(txt, "brick")) {
     // Brick splits — count as both bike + run; handled by caller
     return null;
   }
-  if (txt.includes("swim")) return "Swim";
-  if (txt.includes("bike") || txt.includes("ride") || txt.includes("cycle"))
-    return "Bike";
-  if (txt.includes("run") || txt.includes("jog")) return "Run";
-  if (txt.includes("s&c") || txt.includes("strength") || txt.includes("gym"))
+  if (hasWord(txt, "swim")) return "Swim";
+  if (hasWord(txt, "bike", "ride", "cycle")) return "Bike";
+  if (hasWord(txt, "run", "jog")) return "Run";
+  if (txt.includes("s&c") || hasWord(txt, "strength", "gym"))
     return "Strength";
   return null;
 }
@@ -77,8 +81,8 @@ export function plannedVolumeForWeek(week?: PlanWeek): DisciplineMinutes {
       " " +
       (s.discipline ?? "")
     ).toLowerCase();
-    if (txt.includes("rest")) continue;
-    if (txt.includes("brick")) {
+    if (/\brest\b/.test(txt)) continue;
+    if (hasWord(txt, "brick")) {
       // 60/40 split bike/run, rough
       out.Bike += Math.round(mins * 0.65);
       out.Run += Math.round(mins * 0.35);

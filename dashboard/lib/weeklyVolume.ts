@@ -15,8 +15,8 @@ export interface ActualMinutes {
   Strength: number;
 }
 
-export function actualVolumeForWeek(): ActualMinutes {
-  const v = thisWeekVolume();
+export function actualVolumeForWeek(offsetWeeks = 0): ActualMinutes {
+  const v = thisWeekVolume(offsetWeeks);
   return {
     Swim: Math.round(v.swimMin),
     Bike: Math.round(v.bikeMin),
@@ -25,10 +25,11 @@ export function actualVolumeForWeek(): ActualMinutes {
   };
 }
 
-export function getWeekRange(): { start: Date; end: Date } {
+// offsetWeeks shifts the Mon–Sun window: 0 = current week, -1 = last week, +1 = next.
+export function getWeekRange(offsetWeeks = 0): { start: Date; end: Date } {
   const now = new Date();
   const day = now.getUTCDay(); // 0=Sun
-  const mondayOffset = day === 0 ? -6 : 1 - day;
+  const mondayOffset = (day === 0 ? -6 : 1 - day) + offsetWeeks * 7;
   const start = new Date(
     Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + mondayOffset),
   );
@@ -44,9 +45,9 @@ function classify(a: StravaActivity): keyof DisciplineVolume {
   return "strengthMin";
 }
 
-export function thisWeekVolume(): DisciplineVolume {
+export function thisWeekVolume(offsetWeeks = 0): DisciplineVolume {
   const acts = loadActivities();
-  const { start, end } = getWeekRange();
+  const { start, end } = getWeekRange(offsetWeeks);
   const v: DisciplineVolume = {
     swimMin: 0,
     bikeMin: 0,
